@@ -8,18 +8,7 @@ class StudentController extends Controller
 {
     //
    public function index(){
-    return [
-        [
-            "name" => "Kofi",
-            "class" => 10,
-            "id" => 10001
-        ],
-        [
-            "name" => "Ama",
-            "class" => 10,
-            "id" => 10002
-        ],
-    ];
+    return view('students.index');
    }
 
    public function show(){
@@ -31,17 +20,18 @@ class StudentController extends Controller
    }
 
    public function create(){
-    $storeUrl = route('students.store');
+    $storeUrl = route('students.show',["id" => 1]);
 
     return 
-    '<form method="post" action="'.$storeUrl.'" >
+    '<form method="get" action="'.$storeUrl.'" >
         <input type="text" name="name" id="" placeholder="Enter name">
         <br>
         <input type="text" name="class" id="" placeholder="Enter class">
         <br>
         <input type="hidden" name="_token" value="'. csrf_token() .'" />
         <input type="submit" value="Submit">
-    </form>';
+        </form>';
+        // <input type="hidden" name="_method" value="DELETE" />
    }
 
    public function store(){
