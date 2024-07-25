@@ -4,7 +4,7 @@
 @section('content')
 
 {{-- <div class="d-flex justify-content-center"> --}}
-    <a class="btn btn-lg btn-primary mb-3" href="{{route('students.create')}}" >Add New Student</a>
+  <a class="btn btn-lg btn-primary mb-3" href="{{route('students.create')}}" >Add New Student</a>
 {{-- </div> --}}
 
 

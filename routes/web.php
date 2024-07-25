@@ -29,7 +29,7 @@ Route::get('/homepage', function(Request $request) {
         'number' => $number,
      ]);
 
-});
+})->name('homepage');
 
 
 
