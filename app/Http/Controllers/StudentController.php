@@ -21,7 +21,7 @@ class StudentController extends Controller
    }
 
    public function create(){
-    $storeUrl = route('students.show',["id" => 1]);
+    $storeUrl = route('students.show',["student" => 1]);
 
     return 
     '<form method="get" action="'.$storeUrl.'" >
