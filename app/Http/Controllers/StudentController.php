@@ -9,7 +9,12 @@ class StudentController extends Controller
 {
     //
    public function index(){
-    return view('students.index');
+    // fetch all students and save into a variable
+    $students = Student::all();
+
+    return view('students.index',[
+        "students" => $students // pass the variable to the view 
+    ]);
    }
 
    public function show(){

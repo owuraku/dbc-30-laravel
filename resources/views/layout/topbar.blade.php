@@ -9,6 +9,9 @@
         <div class="navbar-nav">
           <a class="nav-link active" aria-current="page" href="{{route('homepage')}}">Dashboard</a>
           <a class="nav-link" href="{{route('students.index')}}">Students</a>
+          <a class="nav-link" href="{{route('courses.index')}}">Courses</a>
+          <a class="nav-link" href="{{route('subjects.index')}}">Subjects</a>
+
           <a class="nav-link" href="#">Users</a>
         </div>
       </div>

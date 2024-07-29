@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SubjectController;
 use Illuminate\Http\Request;
 
 
@@ -11,6 +12,8 @@ Route::get('/login',[AuthController::class, 'getLoginPage'])->name('auth.loginPa
 
 Route::resource('students', StudentController::class);
 Route::resource('courses', CourseController::class);
+Route::resource('subjects', SubjectController::class);
+
 
 
 

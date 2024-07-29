@@ -3,19 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Course;
+use App\Models\Subject;
 
-class CourseController extends Controller
+class SubjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       $courses = Course::all();
-       return view('courses.index',[
-        'courses' => $courses
-       ]);
+        $subjects = Subject::all();
+        return view('subjects.index',[
+            'subjects' => $subjects
+        ]);
+        //
     }
 
     /**

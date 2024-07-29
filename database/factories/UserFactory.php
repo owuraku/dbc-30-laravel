@@ -14,7 +14,7 @@ class UserFactory extends Factory
     /**
      * The current password being used by the factory.
      */
-    protected static ?string $password;
+    protected static ?string $password = 'password';
 
     /**
      * Define the model's default state.
@@ -41,4 +41,16 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+     /**
+     * Indicate that the model's email address should be unverified.
+     */
+    public function role($role = 'admin'): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => $role,
+        ]);
+    }
+
+
 }
