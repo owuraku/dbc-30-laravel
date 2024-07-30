@@ -10,6 +10,7 @@ class Student extends Model
 {
     use HasFactory;
 
+    // protected $with = ['course'];
 
     public function course(): BelongsTo {
         return $this->belongsTo(Course::class);

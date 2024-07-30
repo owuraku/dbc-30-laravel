@@ -23,7 +23,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        //
+        return view('courses.create');
     }
 
     /**
@@ -31,7 +31,16 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->input(); // data type is array
+
+        // method 1 - using save()
+        // $newCourse = new Course;
+        // $newCourse->name = $data['name'];
+        // $newCourse->save();
+        // return $newCourse;
+
+        Course::create($data);
+        
     }
 
     /**
