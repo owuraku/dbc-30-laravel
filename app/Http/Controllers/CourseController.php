@@ -31,7 +31,13 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->input(); // data type is array
+        // $validated = $request->validate([
+        //     'title' => 'required|unique:posts|max:255',
+        //     'body' => 'required',
+        // ]);
+        $data = $request->validate([
+            'name' => 'required|unique:courses|max:150|min:4'
+        ]); // data type is array
 
         // method 1 - using save()
         // $newCourse = new Course;
@@ -40,6 +46,8 @@ class CourseController extends Controller
         // return $newCourse;
 
         Course::create($data);
+        return redirect()->route('courses.index');
+
         
     }
 

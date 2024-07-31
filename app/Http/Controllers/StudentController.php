@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\Course;
 
 class StudentController extends Controller
 {
@@ -26,22 +27,26 @@ class StudentController extends Controller
    }
 
    public function create(){
-    $storeUrl = route('students.show',["student" => 1]);
+    $courses = Course::all(['id','name'])->map(function ($course) {
+        return [ 
+            'value' => $course->id,
+            'label' => $course->name
+        ];
+    });
 
-    return 
-    '<form method="get" action="'.$storeUrl.'" >
-        <input type="text" name="name" id="" placeholder="Enter name">
-        <br>
-        <input type="text" name="class" id="" placeholder="Enter class">
-        <br>
-        <input type="hidden" name="_token" value="'. csrf_token() .'" />
-        <input type="submit" value="Submit">
-        </form>';
-        // <input type="hidden" name="_method" value="DELETE" />
+    return view('students.create', [ 'courses' => $courses ]);
    }
 
-   public function store(){
-    return "This is the store function";
+   public function store(Request $request){
+        $data = $request->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'dob' => 'required',
+            'course_id' => 'required',
+
+        ]);
+        Student::create($data);
+        return redirect()->route('students.index');
    }
 
    public function edit(){
