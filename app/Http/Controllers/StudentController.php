@@ -38,13 +38,30 @@ class StudentController extends Controller
    }
 
    public function store(Request $request){
+    // first argument => validation rules
+    // second argument => custom messages
+    // third argument => custom attribute names
         $data = $request->validate([
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'dob' => 'required',
-            'course_id' => 'required',
+            'firstname' => 'required|alpha|min:3|max:50',
+            'lastname' => 'required|alpha|max:100|min:3',
+            'dob' => 'required|before:2000-01-01',
+            'email' => 'required|unique:students|email|max:150',
+            'course_id' => 'required|exists:courses,id',
+            'gender' => 'required|in:male,female',
+            'phonenumber' => 'required|numeric',
+            'student_id' => 'required|alpha_num'
+        ],[
+            // regex:/GIKACE-d{3}-d{4}/
+            // 'required' => 'Please enter a value for :attribute',
+            // 'gender.required' => 'Please select a gender',
+            // 'course_id.required' => 'Please select a course',
 
-        ]);
+        ],
+        [
+            'dob' => 'date of birth',
+            'course_id' => 'course'
+        ]
+    );
         Student::create($data);
         return redirect()->route('students.index');
    }

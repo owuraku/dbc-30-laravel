@@ -1,13 +1,14 @@
+
 <div class="mb-3">
     <label for="{{$name}}" class="form-label">{{$label}}</label>
 
-    <select class="form-select" aria-label="{{$label}}" name="{{$name}}">
+    <select class="form-select form-control @error($name) is-invalid @enderror" aria-label="{{$label}}" name="{{$name}}">
 
-        <option>Select One</option>
+        <option value="">Select One</option>
         @foreach($options as $option)
-        <option value="{{$option['value']}}">{{$option['label']}}</option>
+        <option @if($option['value'] == old($name)) selected @endif value="{{$option['value']}}">{{$option['label']}}</option>
         @endforeach
         
     </select>
-    @error($name)<div class="alert-danger alert">{{$message}}</div>@enderror
+    @error($name)<div class="invalid-feedback">{{$message}}</div>@enderror
 </div>

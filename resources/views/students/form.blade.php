@@ -27,25 +27,25 @@
         <label for="gender" class="form-label">Gender</label>
         <select class="form-select"  name="gender">
             <option>Select One</option>      
-            <option value="male">Male</option>
-            <option value="female">Female</option>
+            <option @if('male' == old('gender')) selected @endif value="male">Male</option>
+            <option @if('female' == old('gender')) selected @endif value="female">Female</option>
         </select>
-    </div> --}}
+    </div>
 
-    {{-- <div class="mb-3">
+    <div class="mb-3">
         <label for="course" class="form-label">Course </label>
         <select class="form-select"  name="course_id">
             <option>Select One</option>
             @foreach ($courses as $course)
-            <option value="{{$course['value']}}">{{$course['label']}}</option>
+            <option @if($course['value'] == old('course_id')) selected @endif value="{{$course['value']}}">{{$course['label']}}</option>
             @endforeach
         </select>
     </div> --}}
 
 
-    <x-selectfield :options="$gender" name="gender" label="Select Gender"  />
+    <x-select-field :options="$gender" name="gender" label="Select Gender" />
 
-    <x-selectfield :options="$courses" name="course_id" label="Select Course"  />
+    <x-select-field :options="$courses" name="course_id" label="Select Course"/>
 
     <x-textfield name="phonenumber" label="Student Phonenumber" type="tel" placeholder="Enter student phonenumber" />
     

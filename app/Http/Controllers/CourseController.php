@@ -23,7 +23,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('courses.create');
+        return view('courses.create',[ "course" => new Course ]);
     }
 
     /**
@@ -56,23 +56,33 @@ class CourseController extends Controller
      */
     public function show(string $id)
     {
+
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Course $course)
     {
+        // $course = Course::findOrFail($id); // if (string $id) is passed as an argument
+
+        return view('courses.edit',[ "course" => $course ]);
         //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Course $course)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|unique:courses|max:150|min:4'
+        ]); // data type is array
+
+        $course->update($data);
+        return redirect()->route('courses.index');
+        
     }
 
     /**
