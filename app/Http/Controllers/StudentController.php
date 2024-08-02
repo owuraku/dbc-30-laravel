@@ -42,17 +42,8 @@ class StudentController extends Controller
     // first argument => validation rules
     // second argument => custom messages
     // third argument => custom attribute names
-        $allRules = $this->getValidationRules();
-        $data = $request->validate([
-            'firstname' => 'required|alpha|min:3|max:50',
-            'lastname' => 'required|alpha|max:100|min:3',
-            'dob' => 'required|before:2000-01-01',
-            'course_id' => 'required|exists:courses,id',
-            'gender' => 'required|in:male,female,other',
-            'phonenumber' => 'required|numeric',
-            'student_id' => 'required|alpha_num',
-            'email' => ['required','email','max:150'],
-        ]);
+        $validator = $this->getValidationRules();
+        $data = $request->validate($validator['rules'],$validator['messages'],$validator['attributes']);
         Student::create($data);
         return redirect()->route('students.index');
    }
@@ -68,8 +59,9 @@ class StudentController extends Controller
    }
 
    public function update(Request $request, Student $student){
-        dd($this->getValidationRules($student->id));
-        $data = $request->validate($this->getValidationRules($student->id));
+        $validator = $this->getValidationRules($student->id);
+        $data = $request->validate($validator['rules'],$validator['messages'],$validator['attributes']);
+        $student->update($data);
    }
 
    public function destroy(){
@@ -104,7 +96,7 @@ class StudentController extends Controller
              'dob' => 'date of birth',
             'course_id' => 'course'
         ];
-        return collect([$rules, $messages, $attributes])->flatten()->all();
+        return ['rules' => $rules, 'messages' => $messages,'attributes' => $attributes];
    }
 
 }
