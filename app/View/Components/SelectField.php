@@ -12,9 +12,10 @@ class SelectField extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(public string $name, public string $label, public $options)
+    public function __construct(public string $name, public string $label, public $options, public $value)
     {
         $this->selected = old($name);
+        $this->value = old($name, $value);
         //
     }
 

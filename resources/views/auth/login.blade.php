@@ -8,18 +8,11 @@
     <title>Login</title>
 </head>
 <body>
-    <form class="container-sm mt-4">
+    <form class="container-sm mt-4" action="{{route('auth.login')}}" method="POST">
         <h4 class="mb-3">Welcome back. Please login</h1>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="email" >
-        </div>
-
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control" id="password">
-        </div>
-
+        <x-textfield type="email" name="email" label="Email Address" placeholder="Please enter your email" />
+        <x-textfield type="password" name="password" label="Password" placeholder="Please enter your password" />
+         @csrf 
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
 </body>

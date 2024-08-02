@@ -1,18 +1,18 @@
 <form class="container-sm" action="{{$action}}" method="POST">
     <div class="row g-3">
         <div class="col">
-            <x-textfield name="firstname" label="Firstname" type="text" placeholder="Enter student firstname" />
+            <x-textfield name="firstname" label="Firstname" type="text" :value="$student->firstname" placeholder="Enter student firstname" />
         </div>
         <div class="col">
-            <x-textfield name="lastname" label="Lastname" type="text" placeholder="Enter student lastname" />
+            <x-textfield name="lastname" :value="$student->lastname" label="Lastname" type="text" placeholder="Enter student lastname" />
         </div>
     </div>   
     <div class="row g-3">
         <div class="col">
-            <x-textfield name="student_id" label="Student ID" type="text" placeholder="Enter student ID" />
+            <x-textfield name="student_id" :value="$student->student_id" label="Student ID" type="text" placeholder="Enter student ID" />
         </div>
         <div class="col">
-            <x-textfield name="email" label="Student Email" type="email" placeholder="Enter student email" />
+            <x-textfield name="email" :value="$student->email" label="Student Email" type="email" placeholder="Enter student email" />
         </div>
     </div>
 
@@ -41,17 +41,20 @@
             @endforeach
         </select>
     </div> --}}
-
-
-    <x-select-field :options="$gender" name="gender" label="Select Gender" />
-
-    <x-select-field :options="$courses" name="course_id" label="Select Course"/>
-
-    <x-textfield name="phonenumber" label="Student Phonenumber" type="tel" placeholder="Enter student phonenumber" />
     
-    <x-textfield name="dob" label="Student DOB" type="date" placeholder="Enter student date of birth" />
+    <x-select-field :options="$gender" name="gender" label="Select Gender" :value="$student->gender" />
+
+    <x-select-field :options="$courses" name="course_id" label="Select Course" :value="$student->course_id"/>
+
+    <x-textfield name="phonenumber" :value="$student->phonenumber" label="Student Phonenumber" type="tel" placeholder="Enter student phonenumber" />
+    
+    <x-textfield name="dob" label="Student DOB" :value="$student->dob" type="date" placeholder="Enter student date of birth" />
 
     @csrf
+
+    @isset($edit)
+        @method('PATCH')
+    @endisset
     
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

@@ -1,3 +1,7 @@
-<div>
-    <!-- I begin to speak only when I am certain what I will say is not better left unsaid. - Cato the Younger -->
-</div>
+@extends('layout.master')
+
+@section('title','Edit Details')
+
+@section('content')
+    @include('students.form',[ 'action' => route('students.update', $student->id), 'edit' => true ])
+@endsection

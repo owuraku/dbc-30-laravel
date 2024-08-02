@@ -7,17 +7,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SubjectController;
 use Illuminate\Http\Request;
 
+Route::redirect('/','/login');
+Route::get('/login',[AuthController::class, 'getLoginPage'])->name('auth.loginPage')->middleware('guest');
+Route::post('/login',[AuthController::class, 'authenticate'])->name('auth.login')->middleware('guest');
+Route::post('/logout',[AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');
 
-Route::get('/login',[AuthController::class, 'getLoginPage'])->name('auth.loginPage');
-
-Route::resource('students', StudentController::class);
-Route::resource('courses', CourseController::class);
-Route::resource('subjects', SubjectController::class);
-
-
-
-
-
+Route::resource('students', StudentController::class)->middleware('auth');
+Route::resource('courses', CourseController::class)->middleware('auth');
+Route::resource('subjects', SubjectController::class)->middleware('auth');
 
 Route::get('/homepage', function(Request $request) {
     

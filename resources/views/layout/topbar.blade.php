@@ -13,6 +13,12 @@
           <a class="nav-link" href="{{route('subjects.index')}}">Subjects</a>
 
           <a class="nav-link" href="#">Users</a>
+
+          <form action="{{route('auth.logout')}}" method="post">
+            @csrf
+            <button class="btn btn-success" type="submit">Logout</button>
+          </form>
+
         </div>
       </div>
     </div>

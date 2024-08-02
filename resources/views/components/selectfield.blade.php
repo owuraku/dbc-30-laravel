@@ -1,4 +1,9 @@
 
+{{-- @php
+    if(!isset($value)){
+        $value = '';
+    }
+@endphp --}}
 <div class="mb-3">
     <label for="{{$name}}" class="form-label">{{$label}}</label>
 
@@ -6,7 +11,7 @@
 
         <option value="">Select One</option>
         @foreach($options as $option)
-        <option @if($option['value'] == old($name)) selected @endif value="{{$option['value']}}">{{$option['label']}}</option>
+        <option @if($option['value'] == $value) selected @endif value="{{$option['value']}}">{{$option['label']}}</option>
         @endforeach
         
     </select>
