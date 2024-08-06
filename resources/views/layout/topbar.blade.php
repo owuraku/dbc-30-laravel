@@ -12,13 +12,17 @@
           <a class="nav-link" href="{{route('courses.index')}}">Courses</a>
           <a class="nav-link" href="{{route('subjects.index')}}">Subjects</a>
 
-          <a class="nav-link" href="#">Users</a>
+          @if(Auth::user()->isSuperAdmin())
+          <a class="nav-link" href="{{route('users.index')}}">Users</a>
+          @endif
 
+          @auth
           <form action="{{route('auth.logout')}}" method="post">
             @csrf
             <button class="btn btn-success" type="submit">Logout</button>
           </form>
-
+          @endauth
+          
         </div>
       </div>
     </div>

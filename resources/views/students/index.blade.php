@@ -29,7 +29,7 @@
         <td>
             <a href="{{route('students.show', $student->id)}}" class="btn btn-outline-primary">View</a>
             <a href="{{route('students.edit', $student->id)}}" class="btn btn-outline-success">Edit</a>
-            <button type="button" class="btn btn-outline-danger">Delete</button>
+            <x-deletebutton :action="route('students.destroy', $student->id)"  />
         </td>
       </tr>
       @endforeach

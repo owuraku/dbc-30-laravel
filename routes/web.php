@@ -5,6 +5,9 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\SuperAdminGuard;
+
 use Illuminate\Http\Request;
 
 Route::redirect('/','/login');
@@ -15,6 +18,8 @@ Route::post('/logout',[AuthController::class, 'logout'])->name('auth.logout')->m
 Route::resource('students', StudentController::class)->middleware('auth');
 Route::resource('courses', CourseController::class)->middleware('auth');
 Route::resource('subjects', SubjectController::class)->middleware('auth');
+Route::resource('users', UserController::class)->middleware(['auth', SuperAdminGuard::class]);
+
 
 Route::get('/homepage', function(Request $request) {
     

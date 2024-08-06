@@ -26,7 +26,7 @@
         <td>
             <a href="{{route('courses.show', $course->id)}}" class="btn btn-outline-primary">View</a>
             <a href="{{route('courses.edit', $course->id)}}" class="btn btn-outline-success">Edit</a>
-            <button type="button" class="btn btn-outline-danger">Delete</button>
+            <x-deletebutton :action="route('courses.destroy', $course->id)"  />
         </td>
       </tr>
       @endforeach

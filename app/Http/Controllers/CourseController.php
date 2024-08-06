@@ -88,8 +88,10 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Course $course)
     {
-        //
+        $course->delete();
+        return redirect()->route('courses.index')
+        ->with('alertMessage',"Course {$course->name} deleted successfully")->with('type', 'success');
     }
 }

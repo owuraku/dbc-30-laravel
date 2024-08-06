@@ -12,7 +12,7 @@
 
     <div class="container-fluid">
         <h4>@yield('title')</h4>
-        
+            <x-alert-box type="info" alertMessage="Testing" />
         @yield('content')
     </div>
 

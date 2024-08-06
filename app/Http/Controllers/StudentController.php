@@ -45,7 +45,8 @@ class StudentController extends Controller
         $validator = $this->getValidationRules();
         $data = $request->validate($validator['rules'],$validator['messages'],$validator['attributes']);
         Student::create($data);
-        return redirect()->route('students.index');
+       
+        return redirect()->route('students.index')->with('alertMessage',"Student {$data['firstname']} added successfully")->with('type', 'danger');
    }
 
    public function edit(Student $student){
@@ -87,7 +88,7 @@ class StudentController extends Controller
         }
 
         $messages = [
-              // regex:/GIKACE-d{3}-d{4}/
+            // regex:/GIKACE-d{3}-d{4}/
             // 'required' => 'Please enter a value for :attribute',
             // 'gender.required' => 'Please select a gender',
             // 'course_id.required' => 'Please select a course',
