@@ -1,4 +1,4 @@
-<form class="container-sm" action="{{$action}}" method="POST">
+<form class="container-sm" action="{{$action}}" method="POST" enctype="multipart/form-data">
     <div class="row g-3">
         <div class="col">
             <x-textfield name="firstname" label="Firstname" type="text" :value="$student->firstname" placeholder="Enter student firstname" />
@@ -15,6 +15,19 @@
             <x-textfield name="email" :value="$student->email" label="Student Email" type="email" placeholder="Enter student email" />
         </div>
     </div>
+    <div class="row g-3">
+        @isset($edit)
+        <div class="col">
+            <label for="">Current Image:</label>
+            <img src="{{$student->getImageURL()}}" alt="student image" height="70" width="70">
+        </div>
+        @endisset
+        <div class="col">
+            <x-textfield name="image" :value="$student->image" label="Student Image" type="file" placeholder="Upload student image" />
+        </div>
+    </div>
+
+
 
     @php
         $gender = [

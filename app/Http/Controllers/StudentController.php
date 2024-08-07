@@ -10,9 +10,12 @@ use Illuminate\Validation\Rule;
 class StudentController extends Controller
 {
     //
-   public function index(){
+   public function index(Request $request){
     // fetch all students and save into a variable
-    $students = Student::all();
+    // $students = Student::all();
+    // $pageSize = $request->query('pageSize') ? $request->query('pageSize') : 5;
+    $students = Student::simplePaginate(15);
+
 
     return view('students.index',[
         "students" => $students // pass the variable to the view 
@@ -44,9 +47,14 @@ class StudentController extends Controller
     // third argument => custom attribute names
         $validator = $this->getValidationRules();
         $data = $request->validate($validator['rules'],$validator['messages'],$validator['attributes']);
-        Student::create($data);
-       
-        return redirect()->route('students.index')->with('alertMessage',"Student {$data['firstname']} added successfully")->with('type', 'danger');
+
+        if ($request->hasFile('image')) {
+            // $request->image->store('images', 'public'); // if default storage is local, you need to specific the disk 
+            $data['image'] = $request->image->store('images');
+        }
+
+        Student::create($data);       
+        return redirect()->route('students.index')->with('alertMessage',"Student {$data['firstname']} added successfully");
    }
 
    public function edit(Student $student){
@@ -62,7 +70,14 @@ class StudentController extends Controller
    public function update(Request $request, Student $student){
         $validator = $this->getValidationRules($student->id);
         $data = $request->validate($validator['rules'],$validator['messages'],$validator['attributes']);
+        if ($request->hasFile('image')) {
+            // $request->image->store('images', 'public'); // if default storage is local, you need to specific the disk 
+            $data['image'] = $request->image->store('images');
+        }
+
         $student->update($data);
+        return redirect()->route('students.index')->with('alertMessage',"Student {$data['firstname']} edited successfully");
+
    }
 
    public function destroy(){
@@ -79,19 +94,23 @@ class StudentController extends Controller
             'phonenumber' => 'required|numeric',
             'student_id' => 'required|alpha_num',
             'email' => ['required','email','max:150'],
+            'image' => 'sometimes|image|max:1024'
         ];
 
         if ($studentId != null){
             $rules['email'][] =  Rule::unique('students')->ignore($studentId);
         } else {
-            $rules['email'][] = 'unique|students';
+            $rules['email'][] = 'unique:students';
+            $rules['student_id'][] = 'unique:students';
         }
 
         $messages = [
             // regex:/GIKACE-d{3}-d{4}/
             // 'required' => 'Please enter a value for :attribute',
             // 'gender.required' => 'Please select a gender',
-            // 'course_id.required' => 'Please select a course',
+            'course_id.required' => 'Please select a course',   
+            'image' => 'You can only upload images below 1MB',
+            // 'image' => 'You can only upload images images below 1MB',
         ];
         $attributes = [
              'dob' => 'date of birth',

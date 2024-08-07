@@ -14,6 +14,7 @@
         <th scope="col">Firstname</th>
         <th scope="col">Lastname</th>
         <th scope="col">Gender</th>
+        <th scope="col">Image</th>
         <th scope="col">Course</th>
         <th scope="col">Actions</th>
       </tr>
@@ -25,6 +26,9 @@
         <td>{{ $student->firstname }}</td>
         <td>{{ $student->lastname }}</td>
         <td>{{ $student->gender }}</td>
+        <td>
+          <img src="{{$student->getImageURL()}}" alt="" height="70" width="70">
+        </td>
         <td>{{ $student->course->name }}</td>
         <td>
             <a href="{{route('students.show', $student->id)}}" class="btn btn-outline-primary">View</a>
@@ -37,4 +41,6 @@
 
     </tbody>
   </table>
+
+  {{ $students->links()}}
   @endsection

@@ -12,7 +12,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-       $courses = Course::all();
+       $courses = Course::simplePaginate(10);
        return view('courses.index',[
         'courses' => $courses
        ]);

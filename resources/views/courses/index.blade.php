@@ -13,8 +13,6 @@
         <th scope="col">CourseID</th>
         <th scope="col">Name</th>
         <th scope="col">Actions</th>
-
-
       </tr>
     </thead>
     <tbody>
@@ -34,4 +32,5 @@
 
     </tbody>
   </table>
+  {{ $courses->links()}}
   @endsection
