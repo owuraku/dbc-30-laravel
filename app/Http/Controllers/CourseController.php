@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\Subject;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -12,9 +14,15 @@ class CourseController extends Controller
      */
     public function index()
     {
-       $courses = Course::simplePaginate(10);
+      if(Auth::user()->isSuperAdmin()){
+        $courses = Course::withTrashed()->simplePaginate(10);
+
+      } else {
+          $courses = Course::simplePaginate(10);
+      }
+       
        return view('courses.index',[
-        'courses' => $courses
+        'courses' => $courses,
        ]);
     }
 
@@ -23,7 +31,11 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('courses.create',[ "course" => new Course ]);
+        $subjects = Subject::all();
+        return view('courses.create',[ 
+            "course" => new Course, 
+            'subjects' => $subjects 
+    ]);
     }
 
     /**
@@ -36,7 +48,9 @@ class CourseController extends Controller
         //     'body' => 'required',
         // ]);
         $data = $request->validate([
-            'name' => 'required|unique:courses|max:150|min:4'
+            'name' => 'required|unique:courses|max:150|min:4',
+            'subject_id' => 'required|array',
+            'subject_id.*' => 'exists:subjects,id'
         ]); // data type is array
 
         // method 1 - using save()
@@ -45,7 +59,11 @@ class CourseController extends Controller
         // $newCourse->save();
         // return $newCourse;
 
-        Course::create($data);
+        $course = Course::create($data);
+        // $course->subjects->attach()
+        // $course->subjects->detach()
+        $course->subjects()->sync($data['subject_id']);
+
         return redirect()->route('courses.index');
 
         
@@ -66,8 +84,8 @@ class CourseController extends Controller
     public function edit(Course $course)
     {
         // $course = Course::findOrFail($id); // if (string $id) is passed as an argument
-
-        return view('courses.edit',[ "course" => $course ]);
+        $subjects = Subject::all();
+        return view('courses.edit',[ "course" => $course, 'subjects' => $subjects  ]);
         //
     }
 
@@ -77,10 +95,14 @@ class CourseController extends Controller
     public function update(Request $request, Course $course)
     {
         $data = $request->validate([
-            'name' => 'required|unique:courses|max:150|min:4'
+            'name' => "required|unique:courses,id,{$course->id}|max:150|min:4",
+             'subject_id' => 'required|array',
+            'subject_id.*' => 'exists:subjects,id'
         ]); // data type is array
 
         $course->update($data);
+        $course->subjects()->sync($data['subject_id']);
+
         return redirect()->route('courses.index');
         
     }
@@ -88,9 +110,18 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy(string $id)
     {
-        $course->delete();
+        $course = Course::withTrashed()->find($id);
+
+        if ($course->trashed()){
+            // remove all subjects 
+            $course->subjects()->sync([]);
+            $course->forceDelete();
+        }else{
+            $course->delete();
+        }
+
         return redirect()->route('courses.index')
         ->with('alertMessage',"Course {$course->name} deleted successfully")->with('type', 'success');
     }
