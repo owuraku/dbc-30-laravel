@@ -6,6 +6,14 @@
 {{-- <div class="d-flex justify-content-center"> --}}
   <a class="btn btn-lg btn-primary mb-3" href="{{route('students.create')}}" >Add New Student</a>
 {{-- </div> --}}
+<form class="row flex g-3 justify-content-center"  action="{{route('students.index')}}" method="GET" >
+  <div class="col">
+    <x-textfield value="" label="Search for a student" name="search" type="text" placeholder="Enter name or email" />
+  </div>
+  <div class="col">
+    <button class="btn btn-success" type="submit">Search</button>
+  </div>
+</form>
 
 <table class="table mt-3">
     <thead>

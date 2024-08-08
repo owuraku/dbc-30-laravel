@@ -14,8 +14,19 @@ class StudentController extends Controller
     // fetch all students and save into a variable
     // $students = Student::all();
     // $pageSize = $request->query('pageSize') ? $request->query('pageSize') : 5;
-    $students = Student::simplePaginate(15);
-
+    $search = $request->query('search');
+    if ($search){
+        $search = "%$search%";
+        $students = Student::where('firstname','like', $search)
+        ->orWhere('lastname','like',$search)
+        ->orWhere('email','like', $search)
+        ->orderBy('firstname','asc')
+        ->paginate(15); 
+        // ->toSql();
+        // dd($students);
+    } else {
+        $students = Student::orderBy('firstname','asc')->simplePaginate(15);
+    }
 
     return view('students.index',[
         "students" => $students // pass the variable to the view 
