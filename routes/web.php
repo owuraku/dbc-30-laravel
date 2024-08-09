@@ -10,8 +10,25 @@ use App\Http\Middleware\SuperAdminGuard;
 
 use Illuminate\Http\Request;
 
+
+// use Illuminate\Support\Facades\Mail;
+// use App\Mail\WelcomeMessage;
+
+// Route::get('/mail',function(){
+//     Mail::to('test@test.com')->send(new WelcomeMessage());
+// });
+
+
 Route::redirect('/','/login');
 Route::get('/login',[AuthController::class, 'getLoginPage'])->name('auth.loginPage')->middleware('guest');
+
+Route::get('/forgot-password',[AuthController::class, 'getForgotPasswordPage'])->name('auth.getForgotPasswordPage')->middleware('guest');
+Route::post('/forgot-password',[AuthController::class, 'requestForgotPasswordLink'])->name('auth.requestForgotPasswordLink')->middleware('guest');
+
+Route::get('/reset-password/{token}',[AuthController::class, 'getPasswordResetPage'])->name('password.reset')->middleware('guest');
+Route::post('/reset-password',[AuthController::class, 'resetPassword'])->name('auth.resetPassword')->middleware('guest');
+
+
 Route::post('/login',[AuthController::class, 'authenticate'])->name('auth.login')->middleware('guest');
 Route::post('/logout',[AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');
 
