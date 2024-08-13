@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 // use App\Mail\WelcomeMessage;
 
 // Route::get('/mail',function(){
-//     Mail::to('test@test.com')->send(new WelcomeMessage());
+//     Mail::to('test@test.com')->send(new WelcomeMessage($student));
 // });
 
 

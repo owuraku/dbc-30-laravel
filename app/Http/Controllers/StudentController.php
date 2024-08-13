@@ -25,12 +25,14 @@ class StudentController extends Controller
         // ->toSql();
         // dd($students);
     } else {
-        $students = Student::orderBy('firstname','asc')->simplePaginate(15);
+        $students = Student::orderBy('firstname','asc')->paginate(15);
     }
 
-    return view('students.index',[
-        "students" => $students // pass the variable to the view 
-    ]);
+    return $students;
+
+    // return view('students.index',[
+    //     "students" => $students // pass the variable to the view 
+    // ]);
    }
 
    public function show(){
@@ -64,8 +66,9 @@ class StudentController extends Controller
             $data['image'] = $request->image->store('images');
         }
 
-        Student::create($data);       
-        return redirect()->route('students.index')->with('alertMessage',"Student {$data['firstname']} added successfully");
+        $student = Student::create($data); 
+        return $student;
+        // return redirect()->route('students.index')->with('alertMessage',"Student {$data['firstname']} added successfully");
    }
 
    public function edit(Student $student){
@@ -103,7 +106,7 @@ class StudentController extends Controller
             'course_id' => 'required|exists:courses,id',
             'gender' => 'required|in:male,female,other',
             'phonenumber' => 'required|numeric',
-            'student_id' => 'required|alpha_num',
+            'student_id' => ['required','alpha_num'],
             'email' => ['required','email','max:150'],
             'image' => 'sometimes|image|max:1024'
         ];
@@ -118,7 +121,7 @@ class StudentController extends Controller
         $messages = [
             // regex:/GIKACE-d{3}-d{4}/
             // 'required' => 'Please enter a value for :attribute',
-            // 'gender.required' => 'Please select a gender',
+            'gender.in' => 'Only "male", "female", and "other" are accepted',
             'course_id.required' => 'Please select a course',   
             'image' => 'You can only upload images below 1MB',
             // 'image' => 'You can only upload images images below 1MB',

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Validation\ValidationException;
 use App\Models\User;
 
 
@@ -87,5 +87,37 @@ class AuthController extends Controller
         return $status === Password::PASSWORD_RESET
                     ? redirect()->route('auth.login')->with('alertMessage', __($status))
                     : back()->withErrors(['email' => [__($status)]]);
+    }
+
+    public function getToken(Request $request) {
+        $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+ 
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+        $user->tokens()->delete(); // clear old tokens 
+
+        $token = $user->createToken($request->ip())->plainTextToken;
+        
+        return [
+            'message' => 'Login successful',
+            'token' => $token,
+            'user' => $user
+        ];
+    }
+
+    public function revokeToken(Request $request) {
+        $request->user()->tokens()->delete(); // remove all user tokens 
+    
+        return [
+            'message' => 'Logout successful',
+        ];
     }
 }
